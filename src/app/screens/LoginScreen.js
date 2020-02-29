@@ -1,22 +1,55 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
+import { Redirect } from "react-router-dom";
+
 
 //Component
 
-function LoginScreen(props) {
-    return (
-        
-        <div>
-           <GlobalStyle/>
-           <Form>
-               <Input type = "text" placeholder = "Username"/>
-               <Input type = "password" placeholder ="Password"/>
-               <Button type="submit">Login</Button>
-               <p>Not registered? <A href="#">Create an account</A></p>
-           </Form>
-        </div>
-    )
+function LoginScreen() {
+  const [userInfo, setInfo] = useState({userName: "", pass: ""});
+  const [status, setStatus] = useState('');
+  
+
+  function handleChange(e) {
+    setInfo({[e.target.name] : e.target.value});
+  }; 
+
+  function handleClick(e) {
+    
+    e.preventDefault();
+    if(userInfo.userName || userInfo.pass) {
+      if(userInfo.pass.length >= 6) {
+        setStatus('Login');
+       
+      }else{
+        setStatus('ErrorLength'); 
+      }
+    }else{
+      setStatus("ErrorBlank");
+    }
+    
+  };
+
+  return (
+    
+      <div>
+        <GlobalStyle/>
+        <Form>
+          <Input type = "text" name = "userName" value = {userInfo.userName} onChange = {handleChange} placeholder = "Username"/>
+          <Input type = "password" name = "pass" value = {userInfo.pass} onChange = {handleChange} placeholder = "Password"/>
+          <Button type="submit" onClick = {handleClick}>Login</Button>
+          {status === "ErrorBlank" ? (<P>You need to complete all the fields</P>)
+          : status === "ErrorLength" ? (<P>The password need to be bigger or equal than 6 characters</P>)
+          : status ==="Login" ? <Redirect to="/Home" />
+          : ""
+          
+          }
+          <p>Not registered? <A href="#">Create an account</A></p>
+        </Form>
+      </div>
+     
+  );
 }
 
 //Style
@@ -25,7 +58,7 @@ function LoginScreen(props) {
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: #f3ddd6;
+    background-color: #f3ddd69;
   }
 
 `
@@ -87,6 +120,10 @@ const A = styled.a`
   :hover{
       color: #ffc979;
   }
+`
+const P = styled.a`
+  color: #9e093c;
+  font-size: 20px;
 `
 
 
