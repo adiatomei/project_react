@@ -1,22 +1,27 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
+import { Redirect } from "react-router-dom";
+
 
 //Component
 
 function LoginScreen() {
   const [userInfo, setInfo] = useState({userName: "", pass: ""});
   const [status, setStatus] = useState('');
+  
 
   function handleChange(e) {
     setInfo({[e.target.name] : e.target.value});
   }; 
 
   function handleClick(e) {
+    
     e.preventDefault();
     if(userInfo.userName || userInfo.pass) {
       if(userInfo.pass.length >= 6) {
-        setStatus('Login'); 
+        setStatus('Login');
+        
       }else{
         setStatus('ErrorLength'); 
       }
@@ -27,7 +32,7 @@ function LoginScreen() {
   };
 
   return (
-
+    
       <div>
         <GlobalStyle/>
         <Form>
@@ -36,7 +41,7 @@ function LoginScreen() {
           <Button type="submit" onClick = {handleClick}>Login</Button>
           {status === "ErrorBlank" ? (<P>You need to complete all the fields</P>)
           : status === "ErrorLength" ? (<P>The password need to be bigger or equal than 6 characters</P>)
-          : status ==="Login" ? (<P>You are login</P>) 
+          : status ==="Login" ? <Redirect to="/Home" />
           : ""
           
           }
