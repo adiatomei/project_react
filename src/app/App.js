@@ -1,11 +1,24 @@
 import React from 'react';
 import LoginScreen from './screens/LoginScreen'
+import Home from './screens/Home'
+import ThemeContextProvider from './contexts/ThemeContext'
 
-function App() {
+import {
+  Switch,
+  Route
+} from "react-router-dom";
+
+function App(props) {
+  
   return (
-    <div className="App">
-      <LoginScreen/>
-    </div>
+    <Switch>
+      <div className="App">
+        <ThemeContextProvider >
+          <Route exact path="/"><LoginScreen/></Route>
+          <Route exact path="/Home"><Home/></Route>
+        </ThemeContextProvider >
+      </div>
+    </Switch>
   );
 }
 
